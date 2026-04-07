@@ -1,0 +1,207 @@
+# 舆情监控股票池配置
+# ⛏️ 淘金者版
+
+# ==================== 股票池配置 ====================
+stock_pools:
+  # 核心池 - 沪深 300
+  core:
+    type: index
+    index_code: '000300.SH'
+    name: '沪深 300'
+    priority: 1  # 最高优先级
+    check_interval: 30  # 30 秒检查一次
+  
+  # 重点池 - 中证 500 + 创业板
+  focus:
+    type: multi_index
+    indexes:
+      - '000905.SH'  # 中证 500
+      - '399006.SZ'  # 创业板指
+    priority: 2
+    check_interval: 60  # 1 分钟
+  
+  # 监控池 - 全 A 股
+  all:
+    type: all_a_shares
+    priority: 3
+    check_interval: 300  # 5 分钟
+
+# ==================== 行业池配置 ====================
+industry_pools:
+  - name: '白酒'
+    codes:
+      - '600519.SH'  # 贵州茅台
+      - '000858.SZ'  # 五粮液
+      - '000568.SZ'  # 泸州老窖
+      - '002304.SZ'  # 洋河股份
+    priority: 1
+  
+  - name: '新能源'
+    codes:
+      - '300750.SZ'  # 宁德时代
+      - '002594.SZ'  # 比亚迪
+      - '300014.SZ'  # 亿纬锂能
+    priority: 1
+  
+  - name: '银行'
+    type: industry
+    industry: '银行'
+    priority: 2
+  
+  - name: '证券'
+    type: industry
+    industry: '证券'
+    priority: 2
+  
+  - name: '房地产'
+    type: industry
+    industry: '房地产'
+    priority: 2
+  
+  - name: '医药'
+    type: industry
+    industry: '医药生物'
+    priority: 2
+  
+  - name: '半导体'
+    type: industry
+    industry: '半导体'
+    priority: 1
+  
+  - name: '人工智能'
+    type: concept
+    concept: '人工智能'
+    priority: 1
+
+# ==================== 关键词库 ====================
+keywords:
+  # 利好关键词
+  positive:
+    very_positive:
+      - '重组'
+      - '并购'
+      - '借壳'
+      - '整体上市'
+      - '重大合同'
+      - '中标'
+      - '业绩预增'
+      - '扭亏为盈'
+      - '重磅产品'
+      - '技术突破'
+    
+    positive:
+      - '增持'
+      - '回购'
+      - '分红'
+      - '送转'
+      - '预增'
+      - '增长'
+      - '突破'
+      - '创新'
+      - '合作'
+      - '战略投资'
+  
+  # 利空关键词
+  negative:
+    very_negative:
+      - '退市'
+      - 'ST'
+      - '*ST'
+      - '立案调查'
+      - '违约'
+      - '爆雷'
+      - '业绩预亏'
+      - '巨额亏损'
+      - '破产'
+      - '实控人被抓'
+    
+    negative:
+      - '减持'
+      - '解禁'
+      - '预亏'
+      - '下滑'
+      - '下降'
+      - '诉讼'
+      - '仲裁'
+      - '处罚'
+      - '警示函'
+      - '监管函'
+  
+  # 风险关键词
+  risk:
+    - '问询函'
+    - '关注函'
+    - '风险提示'
+    - '波动异常'
+    - '停牌'
+    - '复牌'
+    - '重大事项'
+    - '不确定性'
+  
+  # 热点关键词
+  hot:
+    - '涨停'
+    - '跌停'
+    - '龙虎榜'
+    - '主力资金'
+    - '北向资金'
+    - '融资买入'
+    - '大宗交易'
+
+# ==================== 来源权重 ====================
+source_weights:
+  # 官方渠道 (权重 1.0)
+  official:
+    sources:
+      - '巨潮资讯'
+      - '上交所'
+      - '深交所'
+      - '北交所'
+      - '证监会'
+    weight: 1.0
+  
+  # 权威媒体 (权重 0.8)
+  authoritative:
+    sources:
+      - '证券时报'
+      - '上海证券报'
+      - '中国证券报'
+      - '财新网'
+      - ' Reuters'
+    weight: 0.8
+  
+  # 财经媒体 (权重 0.6)
+  financial:
+    sources:
+      - '财联社'
+      - '东方财富'
+      - '同花顺'
+      - '新浪财经'
+      - '搜狐财经'
+      - '腾讯财经'
+    weight: 0.6
+  
+  # 社交平台 (权重 0.3)
+  social:
+    sources:
+      - '雪球'
+      - '淘股吧'
+      - '微博'
+      - '知乎'
+    weight: 0.3
+
+# ==================== 黑名单 ====================
+blacklist:
+  # 不可靠来源
+  unreliable_sources:
+    - '某某股吧用户'
+    - '匿名用户'
+    - '自媒体 A'  # 有不良记录的
+  
+  # 敏感词 (直接过滤)
+  sensitive_words:
+    - '内幕消息'
+    - '稳赚不赔'
+    - '推荐牛股'
+    - '加群'
+    - '收费'

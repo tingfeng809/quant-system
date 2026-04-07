@@ -1,0 +1,125 @@
+# 飞书 Webhook 配置
+# ⛏️ 淘金者舆情监控系统
+
+# ==================== 告警配置 ====================
+alert:
+  # 飞书 Webhook URL
+  webhook_url: "https://open.feishu.cn/open-apis/bot/v2/hook/aa04be2c-9535-40a6-b1c0-cdeab1cd73a7"
+  
+  # 告警级别配置
+  levels:
+    very_high:
+      name: "🔴 红色预警"
+      threshold: 0.8
+      notify: true
+      channels: ["feishu", "sms"]  # 飞书 + 短信
+    
+    high:
+      name: "🟠 橙色预警"
+      threshold: 0.6
+      notify: true
+      channels: ["feishu"]
+    
+    medium:
+      name: "🟡 黄色预警"
+      threshold: 0.4
+      notify: true
+      channels: ["feishu"]
+    
+    low:
+      name: "🔵 蓝色预警"
+      threshold: 0.2
+      notify: false  # 仅记录，不推送
+      channels: []
+    
+    attention:
+      name: "⚪ 关注"
+      threshold: 0.0
+      notify: false
+      channels: []
+
+# ==================== 推送设置 ====================
+push_settings:
+  # 批量推送
+  batch_push: true          # 是否批量推送
+  batch_size: 5            # 批量大小
+  batch_interval: 60       # 批量间隔 (秒)
+  
+  # 免打扰时间
+  quiet_hours:
+    enabled: false         # 是否启用免打扰
+    start: "23:00"         # 开始时间
+    end: "08:00"           # 结束时间
+    # 红色预警不受免打扰限制
+    except_levels: ["🔴 红色预警"]
+  
+  # 推送频率限制
+  rate_limit:
+    max_per_minute: 10     # 每分钟最多推送数
+    max_per_hour: 100      # 每小时最多推送数
+    max_per_day: 1000      # 每天最多推送数
+
+# ==================== 告警模板 ====================
+templates:
+  # 红色预警模板
+  very_high:
+    title_template: "🚨【红色预警】{stock} - {title}"
+    color: "red"
+    priority: "P0"
+  
+  # 橙色预警模板
+  high:
+    title_template: "⚠️【橙色预警】{stock} - {title}"
+    color: "orange"
+    priority: "P1"
+  
+  # 黄色预警模板
+  medium:
+    title_template: "📢【黄色预警】{stock} - {title}"
+    color: "yellow"
+    priority: "P2"
+  
+  # 蓝色预警模板
+  low:
+    title_template: "🔵【蓝色关注】{stock} - {title}"
+    color: "blue"
+    priority: "P3"
+
+# ==================== 接收人配置 ====================
+recipients:
+  # 默认接收人 (所有告警)
+  default:
+    - "听风"  # 飞书用户名
+  
+  # 按行业指定接收人
+  by_industry:
+    "白酒":
+      - "白酒分析师"
+    "新能源":
+      - "新能源分析师"
+    "银行":
+      - "金融分析师"
+  
+  # 按预警级别指定接收人
+  by_level:
+    "🔴 红色预警":
+      - "听风"
+      - "风控负责人"
+    "🟠 橙色预警":
+      - "听风"
+
+# ==================== 测试配置 ====================
+test:
+  # 测试用股票
+  test_stocks:
+    - "贵州茅台"
+    - "宁德时代"
+  
+  # 测试告警类型
+  test_alerts:
+    - type: "利好"
+      title: "业绩预增 50%"
+      score: 0.8
+    - type: "利空"
+      title: "大股东减持 1%"
+      score: -0.7

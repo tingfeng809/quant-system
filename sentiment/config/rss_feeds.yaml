@@ -1,0 +1,195 @@
+# 财联社 RSS 数据源配置
+# ⛏️ 淘金者舆情监控系统
+
+# ==================== 财联社 RSS 源 ====================
+cls_rss:
+  # 财联社电报 (7x24h 快讯) - 最快渠道
+  telegraph:
+    url: "https://www.cls.cn/rss/teletext.php"
+    name: "财联社电报"
+    priority: 1  # 最高优先级
+    check_interval: 30  # 30 秒检查一次
+    weight: 0.9  # 高权重
+    category: "快讯"
+    description: "7x24 小时电报快讯，最快财经资讯"
+  
+  # 财联社 A 股
+  stock:
+    url: "https://www.cls.cn/rss/stock.php"
+    name: "财联社 A 股"
+    priority: 2
+    check_interval: 60  # 1 分钟
+    weight: 0.8
+    category: "股票"
+    description: "A 股市场新闻、公告、解读"
+  
+  # 财联社要闻
+  news:
+    url: "https://www.cls.cn/rss/news.php"
+    name: "财联社要闻"
+    priority: 3
+    check_interval: 120  # 2 分钟
+    weight: 0.7
+    category: "要闻"
+    description: "重要财经新闻、政策解读"
+
+# ==================== 其他财经 RSS ====================
+other_rss:
+  # 东方财富
+  eastmoney:
+    url: "https://rss.eastmoney.com/news_cj.xml"
+    name: "东方财富财经"
+    priority: 4
+    check_interval: 300  # 5 分钟
+    weight: 0.6
+    category: "财经"
+  
+  # 新浪财经
+  sina:
+    url: "https://finance.sina.com.cn/rss/finance.xml"
+    name: "新浪财经"
+    priority: 5
+    check_interval: 300
+    weight: 0.6
+    category: "财经"
+  
+  # 证券时报
+  stcn:
+    url: "https://www.stcn.com/rss/news.xml"
+    name: "证券时报"
+    priority: 4
+    check_interval: 300
+    weight: 0.8
+    category: "权威媒体"
+
+# ==================== RSS 采集配置 ====================
+rss_settings:
+  # 用户代理
+  user_agent: "Mozilla/5.0 (compatible; OpenClaw Sentiment Bot/1.0; +https://github.com/openclaw/openclaw)"
+  
+  # 超时设置
+  timeout: 10  # 秒
+  
+  # 重试次数
+  retry_count: 3
+  
+  # 重试间隔
+  retry_interval: 5  # 秒
+  
+  # 解析器
+  parser: "feedparser"  # 使用 feedparser 库
+  
+  # 内容过滤
+  content_filter:
+    # 最小内容长度
+    min_length: 20
+    
+    # 过滤关键词 (广告等)
+    filter_keywords:
+      - "广告"
+      - "推广"
+      - "营销"
+      - "加微"
+      - "qq 群"
+  
+  # 时间过滤
+  time_filter:
+    # 只采集最近 N 小时的内容
+    max_age_hours: 24
+    
+    # 时区
+    timezone: "Asia/Shanghai"
+
+# ==================== 关键词监控 ====================
+keyword_monitor:
+  # 高优先级关键词 (立即告警)
+  urgent:
+    - "重组"
+    - "并购"
+    - "借壳"
+    - "立案调查"
+    - "退市"
+    - "ST"
+    - "实控人被抓"
+    - "爆雷"
+  
+  # 重要关键词 (橙色预警)
+  important:
+    - "业绩预增"
+    - "业绩预亏"
+    - "中标"
+    - "减持"
+    - "增持"
+    - "回购"
+    - "解禁"
+    - "问询函"
+  
+  # 行业关键词
+  industry:
+    # 白酒
+    - "茅台"
+    - "五粮液"
+    - "泸州老窖"
+    - "白酒"
+    
+    # 新能源
+    - "宁德时代"
+    - "比亚迪"
+    - "锂电池"
+    - "光伏"
+    - "新能源车"
+    
+    # 银行
+    - "银行"
+    - "央行"
+    - "降准"
+    - "降息"
+    
+    # 科技
+    - "半导体"
+    - "芯片"
+    - "AI"
+    - "人工智能"
+    - "华为"
+
+# ==================== 雪球配置 ====================
+xueqiu:
+  # Cookie 配置
+  cookies:
+    u: "7670593540"
+    xq_a_token: "140926cd1a48534920e718f5f74c857ef0307437"
+  
+  # 监控股票池
+  watch_stocks:
+    - "600519"  # 贵州茅台
+    - "300750"  # 宁德时代
+    - "000001"  # 平安银行
+    - "002594"  # 比亚迪
+  
+  # 监控大 V
+  watch_users:
+    - "bankroft"  # 知名投资者
+    - "董宝珍"     # 茅台多头
+  
+  # 采集频率
+  check_interval: 300  # 5 分钟
+  
+  # 权重
+  weight: 0.3
+
+# ==================== 测试配置 ====================
+test:
+  # 测试用 RSS 源
+  test_feeds:
+    - "https://www.cls.cn/rss/teletext.php"
+  
+  # 测试关键词
+  test_keywords:
+    - "贵州茅台"
+    - "宁德时代"
+    - "业绩"
+  
+  # 测试雪球
+  test_xueqiu:
+    enabled: true
+    stock_code: "600519"

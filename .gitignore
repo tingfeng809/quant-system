@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.csv
+*.pkl
+*.parquet
+data/cache/
+output/*.png
+output/*.pdf
+.DS_Store
