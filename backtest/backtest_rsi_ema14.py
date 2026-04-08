@@ -80,7 +80,7 @@ def run_backtest(stock_list, strategy, start_date, end_date):
     return pd.DataFrame(results)
 
 
-def print_summary(df: pd.DataFrame):
+def print_summary(df: pd.DataFrame, strategy=None):
     """打印回测汇总"""
     if len(df) == 0:
         print("无回测结果")
@@ -94,10 +94,11 @@ def print_summary(df: pd.DataFrame):
     print(f"📊 回测汇总 - RSI-EMA14策略")
     print(f"{'='*60}")
     print(f"策略参数:")
-    print(f"  - RSI(EMA14) < {strategy.rsi_threshold}")
-    print(f"  - 持股{strategy.hold_days}天")
-    print(f"  - 盈利>{int(strategy.profit_target*100)}%浮动止盈")
-    print(f"  - 亏损{int(strategy.stop_loss*100)}%止损")
+    if strategy:
+        print(f"  - RSI(EMA14) < {strategy.rsi_threshold}")
+        print(f"  - 持股{strategy.hold_days}天")
+        print(f"  - 盈利>{int(strategy.profit_target*100)}%浮动止盈")
+        print(f"  - 亏损{int(strategy.stop_loss*100)}%止损")
     print(f"\n总测试: {total} 只")
     print(f"正收益: {positive} 只 ({win_rate:.1f}%)")
     print(f"负收益: {total - positive} 只 ({100-win_rate:.1f}%)")
@@ -177,7 +178,7 @@ def main():
     end_time = datetime.now()
     
     # 打印结果
-    print_summary(df)
+    print_summary(df, strategy)
     
     # 耗时
     duration = (end_time - start_time).total_seconds()
