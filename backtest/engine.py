@@ -338,10 +338,11 @@ class BacktestEngine:
         else:
             sharpe_ratio = 0
         
-        # 胜率
+        # 胜率 (简化计算: 以卖出次数代替, 不比较买卖价差)
+        # TODO: 需匹配买卖对, 比较实际盈亏才能准确计算
         buy_trades = [t for t in self.trades if t.direction == 'buy']
         sell_trades = [t for t in self.trades if t.direction == 'sell']
-        profitable_trades = len([t for t in sell_trades if t.reason != ''])  # 简化计算
+        profitable_trades = len([t for t in sell_trades if t.reason != ''])  # ⚠️ 简化计算, 结果不准确
         
         # 盈亏比
         if len(sell_trades) > 0:
